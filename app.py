@@ -7,12 +7,13 @@ import twilio.twiml
 from xml.sax.saxutils import escape, unescape
 
 from flask import Flask
-from flask import request, redirect, session
+from flask import request, redirect, session, g
 app = Flask(__name__, instance_relative_config=True)
 app.config.from_object('config')
 app.config.from_pyfile('config.py')
 # Now we can access the configuration variables via app.config["VAR_NAME"].
-
+ctx=app.app_context()
+ctx.push()
 
 #Helper methods
 html_escape_table = {
@@ -24,10 +25,10 @@ html_escape_table = {
      "'":"&rsquo;"
 }
 
-html_unescape_table = {v:k for k, v in html_escape_table.items()}
+g.html_unescape_table = {v:k for k, v in html_escape_table.items()}
 
 def html_unescape(text):
-    return unescape(text, html_unescape_table)
+    return unescape(text, g.html_unescape_table)
 
 def get_text(search_number, search_results):
     fstr="There were "+search_number+". Top five are as follows, text # back for more info:\n"
