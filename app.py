@@ -57,10 +57,11 @@ def sighting():
     isFirst=session.get('isFirst', True)
     Answers=session.get('Answers',None)
     if isFirst:
-      message = 'Welcome to the Twilio FAQ, to begin, enter a search query.\n'+
-      For example, "number porting" or "volume pricing"'
+      message = """Welcome to the Twilio FAQ, to begin, enter a search query.\n
+      For example, "number porting" or "volume pricing"
+      """
       session['isFirst']=False
-    else if Answers=None:
+    elif Answers==None:
       search_string=request.values.get('Body')
       search_number, search_results=get_search(search_string)
       message = get_text(search_number, search_results)
