@@ -16,7 +16,7 @@ ctx=app.app_context()
 ctx.push()
 
 #Helper methods
-html_escape_table = {
+g.html_escape_table = {
      "&": "&amp;",
      '"': "&quot;",
      "'": "&apos;",
@@ -25,7 +25,7 @@ html_escape_table = {
      "'":"&rsquo;"
 }
 
-g.html_unescape_table = {v:k for k, v in html_escape_table.items()}
+g.html_unescape_table = {v:k for k, v in g.html_escape_table.items()}
 
 def html_unescape(text):
     return unescape(text, g.html_unescape_table)
