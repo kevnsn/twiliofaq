@@ -30,7 +30,7 @@ def html_unescape(text):
     return unescape(text, html_unescape_table)
 
 def get_text(search_number, search_results):
-    fstr="There were "+search_number+". Top five are as follows, text # back for info:\n"
+    fstr="There were "+search_number+". Top five are as follows, text # back for more info:\n"
     for idx, res in enumerate(search_results):
         fstr+=str(idx+1)+") "+html_unescape(res['title'])+"\n"
     return fstr +"\nText NEW to start over."
@@ -55,7 +55,7 @@ def get_search(input_str):
 
 def get_answer_str(answer_index, search_results):
     answer=search_results[answer_index-1]
-    return answer.get('title',"")+"\n..."+answer.get('teaser',"")+"...\n For more information visit:\n"+answer.get('link',"") +"\nEnter a new number or reply NEW for new question"
+    return answer.get('title',"")+'\n..."'+answer.get('teaser',"")+'"...\n For full answer, visit:\n'+answer.get('link',"") +"\nEnter a new answer # or reply NEW to start over"
 
 @app.route('/receive', methods=['POST'])
 def sighting():
@@ -63,8 +63,8 @@ def sighting():
     Answers=session.get('Answers',None)
     msgbody=request.values.get('Body').lower()
     if isFirst or msgbody=="new":
-      message = """Welcome to the Twilio FAQ, to begin, enter a search query.\n
-      For example, "number porting" or "volume pricing"
+      message = """Welcome to the Twilio FAQ, to begin, enter a search query or question.\n
+      For example, "number porting," "uk short code," or "How much does a phone number cost?"
       """
       session['isFirst']=False
       session['Answers']=None
