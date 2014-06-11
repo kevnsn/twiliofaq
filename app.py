@@ -54,7 +54,7 @@ def get_search(input_str):
         endindex=teaserstr.find("Related")
         if endindex!=-1:
           teaserstr=teaserstr[:endindex-1]
-        results.append({"link":link,"title":title, "teaser":teaserstr})
+        results.append({"link":link,"title":title, "teaser":html_unescape(teaserstr)})
 
     return result_num, results
 
