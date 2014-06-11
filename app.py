@@ -29,10 +29,10 @@ def html_unescape(text):
     return unescape(text, html_unescape_table)
 
 def get_text(search_number, search_results):
-    fstr="There were "+search_number+" results for your query.  Top five are listed, text the number back for more info:\n"
+    fstr="There were "+search_number+" results. Top five are as follows, text # back for info:\n"
     for idx, res in enumerate(search_results):
         fstr+=str(idx+1)+") "+html_unescape(res['title'])+"\n"
-    return fstr
+    return fstr +"\n Text NEW to start over."
 
 def get_search(input_str):
     search_url="https://www.twilio.com/help/search?q="
@@ -53,13 +53,14 @@ def get_search(input_str):
 
 def get_answer_int(answer_index, search_results):
     answer=search_results[answer_index-1]
-    return answer.title+"\n..."+answer.teaser+"...\n For more information visit:\n"+answer.link
+    return answer.title+"\n..."+answer.teaser+"...\n For more information visit:\n"+answer.link +"\n To ask another question, enter a new query"
 
 @app.route('/receive', methods=['POST'])
 def sighting():
     isFirst=session.get('isFirst', True)
     Answers=session.get('Answers',None)
-    if isFirst:
+    msgbody=request.values.get('Body')
+    if isFirst or msgbody="new" or msgbody="NEW" or msgbody="New":
       message = """Welcome to the Twilio FAQ, to begin, enter a search query.\n
       For example, "number porting" or "volume pricing"
       """
@@ -76,7 +77,7 @@ def sighting():
         message=get_answer_string(int(answer_number), search_results)
         session['Answers']=None
       else:
-        "Invalid question number.  Please enter a number between 1 and 5."
+        message="Invalid question number.  Please enter a number between 1 and 5 or text NEW to ask anotehr question."
 
     #Convert the message string to a TwiML response that is returned
     resp = twilio.twiml.Response()
