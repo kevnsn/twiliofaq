@@ -52,7 +52,7 @@ def get_search(input_str):
         teaserstr=res.by_class('result-body')[0].content.replace("<em>","").replace("</em>","")
         endindex=teaserstr.find("Related")
         if endindex!=-1:
-          teaserstr=teaserstr[:endindex]
+          teaserstr=teaserstr[:endindex-1]
         results.append({"link":link,"title":title, "teaser":teaserstr})
 
     return result_num, results
