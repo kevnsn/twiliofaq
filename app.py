@@ -54,7 +54,7 @@ def get_search(input_str):
 
 def get_answer_str(answer_index, search_results):
     answer=search_results[answer_index-1]
-    return answer.title+"\n..."+answer.teaser+"...\n For more information visit:\n"+answer.link +"\nEnter a new number or reply NEW for new question"
+    return answer.get('title',"")+"\n..."+answer.get('teaser',"")+"...\n For more information visit:\n"+answer.get('link',"") +"\nEnter a new number or reply NEW for new question"
 
 @app.route('/receive', methods=['POST'])
 def sighting():
