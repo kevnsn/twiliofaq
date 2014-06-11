@@ -32,7 +32,7 @@ def get_text(search_number, search_results):
     fstr="There were "+search_number+". Top five are as follows, text # back for info:\n"
     for idx, res in enumerate(search_results):
         fstr+=str(idx+1)+") "+html_unescape(res['title'])+"\n"
-    return fstr +"\n | Text NEW to start over."
+    return fstr +"\nText NEW to start over."
 
 def get_search(input_str):
     search_url="https://www.twilio.com/help/search?q="
@@ -77,7 +77,7 @@ def sighting():
         message=get_answer_string(int(msgbody), search_results)
         session['Answers']=None
       else:
-        message="Invalid question number.  Please enter a number between 1 and 5 or text NEW to ask anotehr question."
+        message="Invalid question number.  Please enter a number between 1 and 5 or text NEW to ask another question."
 
     #Convert the message string to a TwiML response that is returned
     resp = twilio.twiml.Response()
