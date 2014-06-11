@@ -7,7 +7,7 @@ import twilio.twiml
 from xml.sax.saxutils import escape, unescape
 
 from flask import Flask
-from flask import request
+from flask import request, redirect, session
 app = Flask(__name__, instance_relative_config=True)
 app.config.from_object('config')
 app.config.from_pyfile('config.py')
@@ -49,8 +49,11 @@ def get_search(input_str):
         link = res_link.attrs['href']
         title = res_link.content
         results.append({"link":link,"title":title})
-
     return result_num, results
+
+def get_answer_int(answer_index, search_results):
+    answer=search_results[answer_index-1]
+    return answer.title+"\n..."+answer.teaser+"...\n For more information visit:\n"+answer.link
 
 @app.route('/receive', methods=['POST'])
 def sighting():
@@ -65,6 +68,14 @@ def sighting():
       search_string=request.values.get('Body')
       search_number, search_results=get_search(search_string)
       message = get_text(search_number, search_results)
+      session['Answers']=search_results
+    else:
+      #In this case Answers is defined and the user is choosing an answer
+      answer_number=request.values.get('Body')
+      if int(answer_number)<6 and int(answer_number)>0:
+        message=get_answer_string(int(answer_number), search_results)
+      Answers=None
+
     #Convert the message string to a TwiML response that is returned
     resp = twilio.twiml.Response()
     resp.message(message)
