@@ -54,14 +54,14 @@ def get_search(input_str):
 
 def get_answer_str(answer_index, search_results):
     answer=search_results[answer_index-1]
-    return answer.title+"\n..."+answer.teaser+"...\n For more information visit:\n"+answer.link +"\nTo ask again, reply w/ new query"
+    return answer.title+"\n..."+answer.teaser+"...\n For more information visit:\n"+answer.link +"\nEnter a new number or reply NEW for new question"
 
 @app.route('/receive', methods=['POST'])
 def sighting():
     isFirst=session.get('isFirst', True)
     Answers=session.get('Answers',None)
-    msgbody=request.values.get('Body')
-    if isFirst or msgbody=="new" or msgbody=="NEW" or msgbody=="New":
+    msgbody=request.values.get('Body').lower()
+    if isFirst or msgbody=="new":
       message = """Welcome to the Twilio FAQ, to begin, enter a search query.\n
       For example, "number porting" or "volume pricing"
       """
@@ -75,8 +75,8 @@ def sighting():
     else:
       #In this case Answers is defined and the user is choosing an answer
       if msgbody.isnumeric() and int(msgbody)<6 and int(msgbody)>0:
-        message=get_answer_str(int(msgbody), search_results)
-        session['Answers']=None
+        message=get_answer_str(int(msgbody), session['Answers'])
+        #session['Answers']=None #No longer restarts session
       else:
         message="Invalid question number.  Please enter a number between 1 and 5 or text NEW to ask another question."
 
