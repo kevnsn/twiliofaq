@@ -23,6 +23,7 @@ html_escape_table = {
      "<": "&lt;",
      "'":"&rsquo;"
 }
+
 html_unescape_table = {v:k for k, v in html_escape_table.items()}
 
 def html_unescape(text):
@@ -51,9 +52,9 @@ def get_search(input_str):
         results.append({"link":link,"title":title})
     return result_num, results
 
-def get_answer_int(answer_index, search_results):
+def get_answer_str(answer_index, search_results):
     answer=search_results[answer_index-1]
-    return answer.title+"\n..."+answer.teaser+"...\n For more information visit:\n"+answer.link +"\n To ask another question, enter a new query"
+    return answer.title+"\n..."+answer.teaser+"...\n For more information visit:\n"+answer.link +"\nTo ask again, reply w/ new query"
 
 @app.route('/receive', methods=['POST'])
 def sighting():
@@ -73,8 +74,8 @@ def sighting():
       session['Answers']=search_results
     else:
       #In this case Answers is defined and the user is choosing an answer
-      if msgbody.isnumeric() and int(msybody)<6 and int(msybody)>0:
-        message=get_answer_string(int(msgbody), search_results)
+      if msgbody.isnumeric() and int(msgbody)<6 and int(msgbody)>0:
+        message=get_answer_str(int(msgbody), search_results)
         session['Answers']=None
       else:
         message="Invalid question number.  Please enter a number between 1 and 5 or text NEW to ask another question."
