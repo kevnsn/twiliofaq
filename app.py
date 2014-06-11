@@ -28,7 +28,7 @@ html_unescape_table = {v:k for k, v in html_escape_table.items()}
 def html_unescape(text):
     return unescape(text, html_unescape_table)
 
-def get_text(seach_number, search_results):
+def get_text(search_number, search_results):
     fstr="There were "+search_number+" results for your query.  Top five are listed, text the number back for more info:\n"
     for idx, res in enumerate(search_results):
         fstr+=str(idx+1)+") "+html_unescape(res['title'])+"\n"
@@ -74,7 +74,9 @@ def sighting():
       answer_number=request.values.get('Body')
       if int(answer_number)<6 and int(answer_number)>0:
         message=get_answer_string(int(answer_number), search_results)
-      Answers=None
+        session['Answers']=None
+      else:
+        "Invalid question number.  Please enter a number between 1 and 5."
 
     #Convert the message string to a TwiML response that is returned
     resp = twilio.twiml.Response()
