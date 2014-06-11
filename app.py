@@ -65,6 +65,7 @@ def sighting():
       For example, "number porting" or "volume pricing"
       """
       session['isFirst']=False
+      session['Answers']=None
     elif Answers==None:
       search_string=request.values.get('Body')
       search_number, search_results=get_search(search_string)
@@ -72,8 +73,7 @@ def sighting():
       session['Answers']=search_results
     else:
       #In this case Answers is defined and the user is choosing an answer
-      answer_number=request.values.get('Body')
-      if int(answer_number)<6 and int(answer_number)>0:
+      if msgbody.isnumeric() and int(answer_number)<6 and int(answer_number)>0:
         message=get_answer_string(int(answer_number), search_results)
         session['Answers']=None
       else:
