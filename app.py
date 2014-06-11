@@ -43,13 +43,14 @@ def get_search(input_str):
     dom=web.Element(page)
     result_num=(dom.by_class('search-meta'))[0].content[6:]
 
-    raw = dom.by_class('result-title')[0:5]
+    raw = dom.by_class('search-result')[0:5]
     results = []
     for res in raw:
-        res_link=res.by_tag('a')[0]
+        res_link=res.by_class('result-title')[0].by_tag('a')[0]
         link = res_link.attrs['href']
         title = res_link.content
-        results.append({"link":link,"title":title})
+        results.append({"link":link,"title":title, "teaser":res.by_class('result-body')[0].content.replace("<em>","").replace("</em>","")})
+
     return result_num, results
 
 def get_answer_str(answer_index, search_results):
