@@ -33,7 +33,7 @@ def get_text(search_number, search_results):
     fstr="There were "+search_number+". Top five are as follows, text # back for more info:\n"
     for idx, res in enumerate(search_results):
         fstr+=str(idx+1)+") "+html_unescape(res['title'])+"\n"
-    return fstr +"\nText NEW to start over."
+    return fstr +"\nText NEW to start over"
 
 def get_search(input_str):
     search_url="https://www.twilio.com/help/search?q="
@@ -59,7 +59,7 @@ def get_search(input_str):
 
 def get_answer_str(answer_index, search_results):
     answer=search_results[answer_index-1]
-    return answer.get('title',"")+'\n..."'+answer.get('teaser',"")+'"...\nFor full answer, visit:\n'+answer.get('link',"") +"\nEnter a new answer # or reply NEW to start over"
+    return answer.get('title',"")+'\n"...'+answer.get('teaser',"")+'..."\nFor full answer, visit:\n'+answer.get('link',"") +"\nEnter a new answer # or reply NEW to start over"
 
 @app.route('/receive', methods=['POST'])
 def sighting():
