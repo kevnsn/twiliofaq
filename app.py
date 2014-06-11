@@ -49,13 +49,17 @@ def get_search(input_str):
         res_link=res.by_class('result-title')[0].by_tag('a')[0]
         link = res_link.attrs['href']
         title = res_link.content
-        results.append({"link":link,"title":title, "teaser":res.by_class('result-body')[0].content.replace("<em>","").replace("</em>","")})
+        teaserstr=res.by_class('result-body')[0].content.replace("<em>","").replace("</em>","")
+        endindex=teaserstr.find("Related")
+        if endindex!=-1:
+          teaserstr=teaserstr[:endindex]
+        results.append({"link":link,"title":title, "teaser":teaserstr})
 
     return result_num, results
 
 def get_answer_str(answer_index, search_results):
     answer=search_results[answer_index-1]
-    return answer.get('title',"")+'\n..."'+answer.get('teaser',"")+'"...\n For full answer, visit:\n'+answer.get('link',"") +"\nEnter a new answer # or reply NEW to start over"
+    return answer.get('title',"")+'\n..."'+answer.get('teaser',"")+'"...\nFor full answer, visit:\n'+answer.get('link',"") +"\nEnter a new answer # or reply NEW to start over"
 
 @app.route('/receive', methods=['POST'])
 def sighting():
