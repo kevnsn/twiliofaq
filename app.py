@@ -3,6 +3,7 @@ import urllib
 import requests
 from pattern import web
 from twilio.rest import TwilioRestClient
+import twilio.twiml
 
 from flask import Flask
 from flask import request
@@ -13,9 +14,11 @@ app.config.from_pyfile('config.py')
 
 @app.route('/receive', methods=['POST'])
 def sighting():
-  client = TwilioRestClient(app.config["ACCOUNT_SID"], app.config["AUTH_TOKEN"])
-  client.messages.create(from_="+16176817858", to="+16172866786", body=str(request.data))
-  return str(request.data)
+    from_number = request.values.get('From', None)
+    message = "Monkey, thanks for the message!"+str(request.values)
+    resp = twilio.twiml.Response()
+    resp.message(message)
+    return str(resp)
 
 
 if __name__ == '__main__':
