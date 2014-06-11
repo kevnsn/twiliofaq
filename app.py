@@ -60,7 +60,7 @@ def sighting():
     isFirst=session.get('isFirst', True)
     Answers=session.get('Answers',None)
     msgbody=request.values.get('Body')
-    if isFirst or msgbody="new" or msgbody="NEW" or msgbody="New":
+    if isFirst or msgbody=="new" or msgbody=="NEW" or msgbody=="New":
       message = """Welcome to the Twilio FAQ, to begin, enter a search query.\n
       For example, "number porting" or "volume pricing"
       """
